@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">My Application</string>
-    <string name="empty_text"></string>
-    <string name="say_hello">Hello</string>
-    <string name="clear">Clear</string>
+    <string name="app_name">Labwork3</string>
+    <string name="button">Sign UP</string>
 </resources>
