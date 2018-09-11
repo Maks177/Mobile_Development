@@ -1,30 +1,38 @@
 package com.example.maksy.labwork3;
-
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-public class RegistrationActivity extends Activity {
-    EditText firstnameET, lastnameET, phoneET, passwordET, emailET, confirmpasswordET;
+public class RegistrationActivity extends AppCompatActivity {
+    EditText firstNameET, lastNameET, phoneET, passwordET, emailET, confirmPasswordET;
 
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.signup);
+        setContentView(R.layout.activity_registration);
 
-        firstnameET = findViewById(R.id.fname);
-        lastnameET = findViewById(R.id.lname);
+        firstNameET = findViewById(R.id.fname);
+        lastNameET = findViewById(R.id.lname);
         phoneET = findViewById(R.id.phone);
         passwordET = findViewById(R.id.password);
         emailET = findViewById(R.id.email);
-        confirmpasswordET = findViewById(R.id.cpassword);
+        confirmPasswordET = findViewById(R.id.cpassword);
     }
 
     public void Register(View view) {
+        final String firstName = firstNameET.getText().toString();
+        if(!isValidFirstName(firstName)) {
+            firstNameET.setError("Некореткне ім'я");
+        }
+
+        final String lastName = lastNameET.getText().toString();
+        if(!isValidLastName(lastName)) {
+            lastNameET.setError("Некореткне прізвище");
+        }
 
         final String email = emailET.getText().toString();
         if (!isValidEmail(email)) {
@@ -32,37 +40,25 @@ public class RegistrationActivity extends Activity {
         }
         final String pass = passwordET.getText().toString();
         if (!isValidPassword(pass)) {
-            passwordET.setError("Парооль повинен бути більше 6 символів");
+            passwordET.setError("Пароль повинен бути більше 6 символів");
         }
         final String phone = phoneET.getText().toString();
         if (!isValidPhone(phone)) {
             phoneET.setError("Неправильно введений номер");
         }
-        final String fname = firstnameET.getText().toString();
-        if(isValidFirstName(fname)) {
-            firstnameET.setError("Некореткне ім'я");
+        if (!confirmPasswordET.equals(passwordET)) {
+            confirmPasswordET.setError("Перевірте чи паролі співпадають");
         }
-        final String lname = lastnameET.getText().toString();
-        if((isValidLastNAme(lname))) {
-            lastnameET.setError("Некореткне прізвище");
-        }
-        if (!confirmpasswordET.equals(passwordET)) {
-            confirmpasswordET.setError("Перевірте чи паролі співпадають");
-        }
-
     }
-
 
     //validating email
     private boolean isValidEmail(String email) {
         String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                 + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,6})$";
-
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
-
 
     // validating password
     private boolean isValidPassword(String pass) {
@@ -75,27 +71,25 @@ public class RegistrationActivity extends Activity {
         return matcher.matches();
     }
 
+    //validating phone
     private boolean isValidPhone(String phone) {
         String PHONE_PATTERN = "[0-9]{10}";
         Pattern pattern = Pattern.compile(PHONE_PATTERN);
         Matcher matcher = pattern.matcher(phone);
         return matcher.matches();
     }
-
-    private boolean isValidFirstName(String fname) {
-
-        String FirstName_PATTERN = "[A-Za-z]+[А-Яа-я]{1,10}";
+    // validate firstName
+    private boolean isValidFirstName(String firstName) {
+        String FirstName_PATTERN = "[a-z]{1,20}";
         Pattern pattern = Pattern.compile(FirstName_PATTERN);
-        Matcher matcher = pattern.matcher(fname);
+        Matcher matcher = pattern.matcher(firstName);
         return matcher.matches();
     }
-
-    private boolean isValidLastNAme(String lname) {
-
-        String LASTANAME_PATTERN = "[A-Za-z]+[А-Яа-я]{1,10}";
+    //validateLastName
+    private boolean isValidLastName(String lastName) {
+        String LASTANAME_PATTERN = "[a-zA-Z]{1,20}";
         Pattern pattern = Pattern.compile(LASTANAME_PATTERN);
-        Matcher matcher = pattern.matcher(lname);
+        Matcher matcher = pattern.matcher(lastName);
         return matcher.matches();
     }
-
 }

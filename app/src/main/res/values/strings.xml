@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Labwork3</string>
     <string name="button">Sign UP</string>
+    <string name ="lastname">Last Name</string>
+    <string name="firstname">First Name</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="pass">Password</string>
+    <string name="confpass">Confirm Password</string>
 </resources>
