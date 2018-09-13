@@ -1,14 +1,21 @@
 package com.example.maksy.labwork3;
 import android.os.Bundle;
+
+import android.util.Patterns;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-public class RegistrationActivity extends AppCompatActivity {
-    EditText firstNameET, lastNameET, phoneET, passwordET, emailET, confirmPasswordET;
 
+public class RegistrationActivity extends AppCompatActivity {
+    EditText firstNameET;
+    EditText lastNameET;
+    EditText phoneET;
+    EditText passwordET;
+    EditText emailET;
+    EditText confirmPasswordET;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +30,7 @@ public class RegistrationActivity extends AppCompatActivity {
         confirmPasswordET = findViewById(R.id.cpassword);
     }
 
-    public void Register(View view) {
+    public void register(View view) {
         final String firstName = firstNameET.getText().toString();
         if(!isValidFirstName(firstName)) {
             firstNameET.setError("Некореткне ім'я");
@@ -53,9 +60,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
     //validating email
     private boolean isValidEmail(String email) {
-        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,6})$";
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Pattern EMAIL_PATTERN = Patterns.EMAIL_ADDRESS;
+        Pattern pattern = Pattern.compile(String.valueOf(EMAIL_PATTERN));
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
