@@ -7,4 +7,5 @@
     <string name="email">Email</string>
     <string name="pass">Password</string>
     <string name="confpass">Confirm Password</string>
+    <string name="viewlist">View List</string>
 </resources>

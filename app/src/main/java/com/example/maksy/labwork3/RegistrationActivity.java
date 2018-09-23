@@ -1,4 +1,7 @@
 package com.example.maksy.labwork3;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.util.Patterns;
@@ -16,11 +19,16 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText passwordET;
     EditText emailET;
     EditText confirmPasswordET;
+    private SharedPreferences sp;
+    private SharedPreferences.Editor spEditor;
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        sp  = getSharedPreferences("app_settings", Context.MODE_PRIVATE);
+        spEditor = sp.edit();
 
         firstNameET = findViewById(R.id.fname);
         lastNameET = findViewById(R.id.lname);
@@ -53,12 +61,26 @@ public class RegistrationActivity extends AppCompatActivity {
         if (!isValidPhone(phone)) {
             phoneET.setError("Неправильно введений номер");
         }
-        if (!confirmPasswordET.equals(passwordET)) {
+        final String confPass = confirmPasswordET.getText().toString();
+        if (!confPass.equals(pass)) {
             confirmPasswordET.setError("Перевірте чи паролі співпадають");
         }
+        else {
+            String list = sp.getString("entry_list", "");
+            list += firstName + "|" + lastName + "|" + phone + "&";
+            spEditor.putString("entry_list", list);
+            spEditor.apply();
+            firstNameET.setText("");
+            lastNameET.setText("");
+            emailET.setText("");
+            phoneET.setText("");
+            passwordET.setText("");
+            confirmPasswordET.setText("");
+        }
+
     }
 
-    //validating email
+
     private boolean isValidEmail(String email) {
         Pattern EMAIL_PATTERN = Patterns.EMAIL_ADDRESS;
         Pattern pattern = Pattern.compile(String.valueOf(EMAIL_PATTERN));
@@ -86,7 +108,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
     // validate firstName
     private boolean isValidFirstName(String firstName) {
-        String FirstName_PATTERN = "[a-z]{1,20}";
+        String FirstName_PATTERN = "[a-zA-Z]{1,20}";
         Pattern pattern = Pattern.compile(FirstName_PATTERN);
         Matcher matcher = pattern.matcher(firstName);
         return matcher.matches();
@@ -98,4 +120,9 @@ public class RegistrationActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(lastName);
         return matcher.matches();
     }
+    public void onViewList (View view) {
+        Intent i = new Intent(this, ListActivity.class);
+        startActivity(i);
+    }
 }
+
