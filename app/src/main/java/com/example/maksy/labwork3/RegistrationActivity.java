@@ -13,12 +13,12 @@ import java.util.regex.Matcher;
 
 
 public class RegistrationActivity extends AppCompatActivity {
-    EditText firstNameET;
-    EditText lastNameET;
-    EditText phoneET;
-    EditText passwordET;
-    EditText emailET;
-    EditText confirmPasswordET;
+    EditText firstNameEditText;
+    EditText lastNameEditText;
+    EditText phoneEditText;
+    EditText passwordEditText;
+    EditText emailEditText;
+    EditText confirmPasswordEditText;
     private SharedPreferences sp;
     private SharedPreferences.Editor spEditor;
 
@@ -28,59 +28,66 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         sp  = getSharedPreferences("app_settings", Context.MODE_PRIVATE);
-        spEditor = sp.edit();
+       initfields();
+    }
 
-        firstNameET = findViewById(R.id.fname);
-        lastNameET = findViewById(R.id.lname);
-        phoneET = findViewById(R.id.phone);
-        passwordET = findViewById(R.id.password);
-        emailET = findViewById(R.id.email);
-        confirmPasswordET = findViewById(R.id.cpassword);
+    private void saveInfo() {
+        final String lastName = lastNameEditText.getText().toString();
+        final String firstName = firstNameEditText.getText().toString();
+        final String phone = phoneEditText.getText().toString();
+        spEditor = sp.edit();
+        String list = sp.getString("entry_list", "");
+        list += firstName + "|" + lastName + "|" + phone + "&";
+        spEditor.putString("entry_list", list);
+        spEditor.apply();
+        firstNameEditText.setText("");
+        lastNameEditText.setText("");
+        emailEditText.setText("");
+        phoneEditText.setText("");
+        passwordEditText.setText("");
+        confirmPasswordEditText.setText("");
+    }
+    private void initfields() {
+        firstNameEditText = findViewById(R.id.fname);
+        lastNameEditText = findViewById(R.id.lname);
+        phoneEditText = findViewById(R.id.phone);
+        passwordEditText = findViewById(R.id.password);
+        emailEditText = findViewById(R.id.email);
+        confirmPasswordEditText = findViewById(R.id.cpassword);
     }
 
     public void register(View view) {
-        final String firstName = firstNameET.getText().toString();
+        final String firstName = firstNameEditText.getText().toString();
         if(!isValidFirstName(firstName)) {
-            firstNameET.setError("Некореткне ім'я");
+            firstNameEditText.setError("Некореткне ім'я");
         }
 
-        final String lastName = lastNameET.getText().toString();
+        final String lastName = lastNameEditText.getText().toString();
         if(!isValidLastName(lastName)) {
-            lastNameET.setError("Некореткне прізвище");
+            lastNameEditText.setError("Некореткне прізвище");
         }
 
-        final String email = emailET.getText().toString();
+        final String email = emailEditText.getText().toString();
         if (!isValidEmail(email)) {
-            emailET.setError("Неправильно введена пошта");
+            emailEditText.setError("Неправильно введена пошта");
         }
-        final String pass = passwordET.getText().toString();
+        final String pass = passwordEditText.getText().toString();
         if (!isValidPassword(pass)) {
-            passwordET.setError("Пароль повинен бути більше 6 символів");
+            passwordEditText.setError("Пароль повинен бути більше 6 символів");
         }
-        final String phone = phoneET.getText().toString();
+        final String phone = phoneEditText.getText().toString();
         if (!isValidPhone(phone)) {
-            phoneET.setError("Неправильно введений номер");
+            phoneEditText.setError("Неправильно введений номер");
         }
-        final String confPass = confirmPasswordET.getText().toString();
+        final String confPass = confirmPasswordEditText.getText().toString();
         if (!confPass.equals(pass)) {
-            confirmPasswordET.setError("Перевірте чи паролі співпадають");
+            confirmPasswordEditText.setError("Перевірте чи паролі співпадають");
         }
         else {
-            String list = sp.getString("entry_list", "");
-            list += firstName + "|" + lastName + "|" + phone + "&";
-            spEditor.putString("entry_list", list);
-            spEditor.apply();
-            firstNameET.setText("");
-            lastNameET.setText("");
-            emailET.setText("");
-            phoneET.setText("");
-            passwordET.setText("");
-            confirmPasswordET.setText("");
+           saveInfo();
         }
 
     }
-
-
     private boolean isValidEmail(String email) {
         Pattern EMAIL_PATTERN = Patterns.EMAIL_ADDRESS;
         Pattern pattern = Pattern.compile(String.valueOf(EMAIL_PATTERN));
@@ -108,8 +115,8 @@ public class RegistrationActivity extends AppCompatActivity {
     }
     // validate firstName
     private boolean isValidFirstName(String firstName) {
-        String FirstName_PATTERN = "[a-zA-Z]{1,20}";
-        Pattern pattern = Pattern.compile(FirstName_PATTERN);
+        String FIRSTNAME_PATTERN = "[a-zA-Z]{1,20}";
+        Pattern pattern = Pattern.compile(FIRSTNAME_PATTERN);
         Matcher matcher = pattern.matcher(firstName);
         return matcher.matches();
     }

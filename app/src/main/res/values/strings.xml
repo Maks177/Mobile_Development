@@ -1,11 +1,12 @@
 <resources>
+        <!-- Activity Registration -->
     <string name="app_name">Labwork3</string>
     <string name="button">Sign UP</string>
-    <string name ="lastname">Last Name</string>
-    <string name="firstname">First Name</string>
+    <string name ="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
     <string name="phone">Phone</string>
     <string name="email">Email</string>
     <string name="pass">Password</string>
-    <string name="confpass">Confirm Password</string>
-    <string name="viewlist">View List</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="list_view_info">View List</string>
 </resources>
